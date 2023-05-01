@@ -51,8 +51,7 @@ def get_dog_breeds():
 
 def call_resnet(image):
     API_URL = "https://api-inference.huggingface.co/models/microsoft/resnet-50"
-    # headers = {"Authorization": "Bearer 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"}
-    headers = {"Authorization": "Bearer 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"}
+    
 
     with open(image, "rb") as f:
         data = f.read()
@@ -128,13 +127,13 @@ def main():
 
     device = torch.device('cuda:{}'.format(opt.gpu_ids[0])) if opt.gpu_ids[0] != '-1' else torch.device('cpu')
 
-    # fid = calculate_fid(opt.generated_dir, opt.target_dir)
-    # print('FID: {}'.format(fid))
+    fid = calculate_fid(opt.generated_dir, opt.target_dir)
+    print('FID: {}'.format(fid))
     kid = calculate_kid(opt.generated_dir, opt.target_dir, device)
     print('KID: {}'.format(kid))
-    # print(test_resnet('C:\\Users\\amart50\\Documents\\stable-i2i\\outputs\\img2img-samples\\a_realistic_photo_of_a_dog_head\\seed_24469_00077.png'))
-    # top1_accuracy(opt.generated_dir)
-    # top5_accuracy(opt.generated_dir)
+    print(test_resnet('C:\\Users\\amart50\\Documents\\stable-i2i\\outputs\\img2img-samples\\a_realistic_photo_of_a_dog_head\\seed_24469_00077.png'))
+    top1_accuracy(opt.generated_dir)
+    top5_accuracy(opt.generated_dir)
 
 
 
