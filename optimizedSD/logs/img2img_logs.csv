@@ -1,0 +1,11 @@
+prompt,outdir,init_img,skip_grid,skip_save,ddim_steps,ddim_eta,n_iter,H,W,strength,n_samples,n_rows,scale,from_file,seed,device,unet_bs,turbo,precision,format,sampler
+a realistic photo of a dog head,outputs/img2img-samples,C:/Program Files/Git/usr/bin,False,False,50,0.0,1,512,512,0.8,1,0,7.5,,209292,cuda,1,False,autocast,png,ddim
+a realistic photo of a dog head,outputs/img2img-samples,C:/Program Files/Git/cmd,False,False,50,0.0,1,512,512,0.8,1,0,7.5,,337992,cuda,1,False,autocast,png,ddim
+a realistic photo of a dog head,outputs/img2img-samples,C:/Program Files/Git/dev,False,False,50,0.0,1,512,512,0.8,1,0,7.5,,781224,cuda,1,False,autocast,png,ddim
+a realistic photo of a dog head,outputs/img2img-samples,C:/Program Files/Git/etc,False,False,50,0.0,1,512,512,0.8,1,0,7.5,,193803,cuda,1,False,autocast,png,ddim
+a realistic photo of a dog head,outputs/img2img-samples,C:/Program Files/Git/git-bash.exe,False,False,50,0.0,1,512,512,0.8,1,0,7.5,,408370,cuda,1,False,autocast,png,ddim
+a realistic photo of a dog head,outputs/img2img-samples,C:/Program Files/Git/git-cmd.exe,False,False,50,0.0,1,512,512,0.8,1,0,7.5,,391088,cuda,1,False,autocast,png,ddim
+a realistic photo of a dog head,outputs/img2img-samples,C:/Program Files/Git/LICENSE.txt,False,False,50,0.0,1,512,512,0.8,1,0,7.5,,71083,cuda,1,False,autocast,png,ddim
+a realistic photo of a dog head,outputs/img2img-samples,C:/Program Files/Git/mingw64,False,False,50,0.0,1,512,512,0.8,1,0,7.5,,465025,cuda,1,False,autocast,png,ddim
+a realistic photo of a dog head,outputs/img2img-samples,/proc,False,False,50,0.0,1,512,512,0.8,1,0,7.5,,158020,cuda,1,False,autocast,png,ddim
+a realistic photo of a dog head,outputs/img2img-samples,C:/Program Files/Git/ReleaseNotes.html,False,False,50,0.0,1,512,512,0.8,1,0,7.5,,377226,cuda,1,False,autocast,png,ddim

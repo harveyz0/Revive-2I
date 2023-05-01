@@ -1,0 +1,100 @@
+0	151	Chihuahua
+1	152	Japanese spaniel
+2	153	Maltese dog, Maltese terrier, Maltese
+3	154	Pekinese, Pekingese, Peke
+4	155	Shih-Tzu
+5	156	Blenheim spaniel
+6	157	papillon
+7	158	toy terrier
+8	159	Rhodesian ridgeback
+9	160	Afghan hound, Afghan
+10	161	basset, basset hound
+11	162	beagle
+12	163	bloodhound, sleuthhound
+13	164	bluetick
+14	165	black-and-tan coonhound
+15	166	Walker hound, Walker foxhound
+16	167	English foxhound
+17	168	redbone
+18	169	borzoi, Russian wolfhound
+19	170	Irish wolfhound
+20	171	Italian greyhound
+21	172	whippet
+22	173	Ibizan hound, Ibizan Podenco
+23	174	Norwegian elkhound, elkhound
+24	175	otterhound, otter hound
+25	176	Saluki, gazelle hound
+26	177	Scottish deerhound, deerhound
+27	178	Weimaraner
+28	179	Staffordshire bullterrier, Staffordshire bull terrier
+29	180	American Staffordshire terrier, Staffordshire terrier, American pit bull terrier, pit bull terrier
+30	181	Bedlington terrier
+31	182	Border terrier
+32	183	Kerry blue terrier
+33	184	Irish terrier
+34	185	Norfolk terrier
+35	186	Norwich terrier
+36	187	Yorkshire terrier
+37	188	wire-haired fox terrier
+38	189	Lakeland terrier
+39	190	Sealyham terrier, Sealyham
+40	191	Airedale, Airedale terrier
+41	192	cairn, cairn terrier
+42	193	Australian terrier
+43	194	Dandie Dinmont, Dandie Dinmont terrier
+44	195	Boston bull, Boston terrier
+45	196	miniature schnauzer
+46	197	giant schnauzer
+47	198	standard schnauzer
+48	199	Scotch terrier, Scottish terrier, Scottie
+49	200	Tibetan terrier, chrysanthemum dog
+50	201	silky terrier, Sydney silky
+51	202	soft-coated wheaten terrier
+52	203	West Highland white terrier
+53	204	Lhasa, Lhasa apso
+54	205	flat-coated retriever
+55	206	curly-coated retriever
+56	207	golden retriever
+57	208	Labrador retriever
+58	209	Chesapeake Bay retriever
+59	210	German short-haired pointer
+60	211	vizsla, Hungarian pointer
+61	212	English setter
+62	213	Irish setter, red setter
+63	214	Gordon setter
+64	215	Brittany spaniel
+65	216	clumber, clumber spaniel
+66	217	English springer, English springer spaniel
+67	218	Welsh springer spaniel
+68	219	cocker spaniel, English cocker spaniel, cocker
+69	220	Sussex spaniel
+70	221	Irish water spaniel
+71	222	kuvasz
+72	223	schipperke
+73	224	groenendael
+74	225	malinois
+75	226	briard
+76	227	kelpie
+77	228	komondor
+78	229	Old English sheepdog, bobtail
+79	230	Shetland sheepdog, Shetland sheep dog, Shetland
+80	231	collie
+81	232	Border collie
+82	233	Bouvier des Flandres, Bouviers des Flandres
+83	234	Rottweiler
+84	235	German shepherd, German shepherd dog, German police dog, alsatian
+85	236	Doberman, Doberman pinscher
+86	237	miniature pinscher
+87	238	Greater Swiss Mountain dog
+88	239	Bernese mountain dog
+89	240	Appenzeller
+90	241	EntleBucher
+91	242	boxer
+92	243	bull mastiff
+93	244	Tibetan mastiff
+94	245	French bulldog
+95	246	Great Dane
+96	247	Saint Bernard, St Bernard
+97	248	Eskimo dog, husky
+98	249	malamute, malemute, Alaskan malamute
+99	250	Siberian husky
