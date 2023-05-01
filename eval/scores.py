@@ -27,7 +27,7 @@ def calculate_fid(generated, real, cuda=True, batch_size=25, dims=2048):
     return fid
 
 # calculate_kid_given_paths(paths, batch_size, cuda, dims, model_type='inception'):
-def calculate_kid(generated, real, device, cuda=True, batch_size=50, dims=2048):
+def calculate_kid(generated, real, cuda=True, batch_size=50, dims=2048):
     count = len(os.listdir(real))
     incrementer = 1
     while count > incrementer:
@@ -49,8 +49,10 @@ def get_dog_breeds():
     print(dog_list)
     return dog_list
 
-def call_resnet(image):
+def call_resnet(image, token):
     API_URL = "https://api-inference.huggingface.co/models/microsoft/resnet-50"
+    bearer = "Bearer " + token
+    headers = {"Authorization": bearer}
     
 
     with open(image, "rb") as f:
@@ -61,7 +63,7 @@ def call_resnet(image):
     return response
 
 
-def top1_accuracy(generated_dir):
+def top1_accuracy(generated_dir, token):
     top1 = 0
     breeds = get_dog_breeds()
     for filename in os.listdir(generated_dir):
@@ -74,7 +76,7 @@ def top1_accuracy(generated_dir):
     print(len(os.listdir(generated_dir)))
     print(top1/len(os.listdir(generated_dir)))
 
-def top5_accuracy(generated_dir):
+def top5_accuracy(generated_dir, token):
     top5 = 0
     breeds = get_dog_breeds()
     for filename in os.listdir(generated_dir):
@@ -117,6 +119,13 @@ def main():
     )
 
     parser.add_argument(
+        '--api-key',
+        type=str,
+        default=None,
+        help='api key for resnet50'
+    )
+
+    parser.add_argument(
         '--out-dir',
         type=str,
         default='outputs/eval',
@@ -127,13 +136,15 @@ def main():
 
     device = torch.device('cuda:{}'.format(opt.gpu_ids[0])) if opt.gpu_ids[0] != '-1' else torch.device('cpu')
 
-    fid = calculate_fid(opt.generated_dir, opt.target_dir)
+    fid = calculate_fid(opt.generated_dir, opt.target_dir, cuda=(opt.gpu_ids[0] != '-1'))
     print('FID: {}'.format(fid))
-    kid = calculate_kid(opt.generated_dir, opt.target_dir, device)
+    kid = calculate_kid(opt.generated_dir, opt.target_dir, cuda=(opt.gpu_ids[0] != '-1'))
     print('KID: {}'.format(kid))
-    print(test_resnet('C:\\Users\\amart50\\Documents\\stable-i2i\\outputs\\img2img-samples\\a_realistic_photo_of_a_dog_head\\seed_24469_00077.png'))
-    top1_accuracy(opt.generated_dir)
-    top5_accuracy(opt.generated_dir)
+    # print(test_resnet('C:\\Users\\amart50\\Documents\\stable-i2i\\outputs\\img2img-samples\\a_realistic_photo_of_a_dog_head\\seed_24469_00077.png'))
+    
+    if opt.api_key: # This is definetly not my key ;) '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'
+        top1_accuracy(opt.generated_dir)
+        top5_accuracy(opt.generated_dir)
 
 
 
