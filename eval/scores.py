@@ -142,7 +142,7 @@ def main():
     print('KID: {}'.format(kid))
     # print(test_resnet('C:\\Users\\amart50\\Documents\\stable-i2i\\outputs\\img2img-samples\\a_realistic_photo_of_a_dog_head\\seed_24469_00077.png'))
     
-    if opt.api_key: # This is definetly not my key ;) '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'
+    if opt.api_key: # This is definetly not my key ;) 
         top1_accuracy(opt.generated_dir)
         top5_accuracy(opt.generated_dir)
 
