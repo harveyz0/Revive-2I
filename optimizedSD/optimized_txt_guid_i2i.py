@@ -124,7 +124,7 @@ parser.add_argument(
     "--ddim_eta",
     type=float,
     default=0.0,
-    help="ddim eta (eta=0.0 corresponds to deterministic sampling",
+    help="ddim eta (eta=0.0 corresponds to deterministic sampling)",
 )
 parser.add_argument(
     "--n_iter",
@@ -147,7 +147,7 @@ parser.add_argument(
 parser.add_argument(
     "--strength",
     type=float,
-    default=0.75,
+    default=1.0,
     help="strength for noising/unnoising. 1.0 corresponds to full destruction of information in init image",
 )
 parser.add_argument(
@@ -178,6 +178,11 @@ parser.add_argument(
     type=int,
     default=None,
     help="the seed (for reproducible sampling)",
+)
+parser.add_argument(
+    "--iterate_seed",
+    action="store_true",
+    help="iterate the seed for each sample"
 )
 parser.add_argument(
     "--device",
@@ -559,6 +564,8 @@ elif opt.source_img_dir:
                                 )
                                 seeds += str(opt.seed) + ","
                                 # opt.seed += 1 # stopped incrememnting seed to keep the same seed for each prompt
+                                if opt.iterate_seed:
+                                    opt.seed += 1
                                 base_count += 1
 
                             if opt.device != "cpu":

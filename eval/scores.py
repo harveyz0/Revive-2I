@@ -167,9 +167,8 @@ def main():
     print('FID: {}'.format(fid))
     kid = calculate_kid(opt.generated_dir, opt.target_dir, cuda=(opt.gpu_ids[0] != '-1'))
     print('KID: {}'.format(kid))
-    # print(test_resnet('C:\\Users\\amart50\\Documents\\stable-i2i\\outputs\\img2img-samples\\a_realistic_photo_of_a_dog_head\\seed_24469_00077.png'))
     
-    if opt.api_key: # This is definetly not my key ;) 
+    if opt.api_key:
         responses = call_api(opt.generated_dir, opt.api_key)
         top1, top5 = call_accuracy(responses, opt.generated_dir)
         print('top1: {}'.format(top1))
