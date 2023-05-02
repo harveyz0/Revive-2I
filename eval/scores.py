@@ -43,10 +43,10 @@ def get_dog_breeds():
     # from dog_list.txt, get all the dog breed labels. they are listed as
     # 0	151	Chihuahua
     dog_list = []
-    with open('eval/dog_list.txt', 'r') as f:
+    with open('dog_list.txt', 'r') as f:
         for line in f:
             dog_list.append(line.split('\t')[2].strip())
-    print(dog_list)
+    # print(dog_list)
     return dog_list
 
 def call_resnet(image, token):
@@ -54,13 +54,40 @@ def call_resnet(image, token):
     bearer = "Bearer " + token
     headers = {"Authorization": bearer}
     
-
     with open(image, "rb") as f:
         data = f.read()
     response = requests.post(API_URL, headers=headers, data=data)
     response = response.json()
     # get top 1 label from response and return it 
     return response
+
+def call_api(generated_dir, token):
+    responses = []
+    for filename in os.listdir(generated_dir):
+        if filename.endswith(".png"):
+            # responses.append(call_resnet(os.path.join(generated_dir, filename), token))
+            responses.append(call_resnet(os.path.join(generated_dir, filename), token))
+    return responses
+
+
+def call_accuracy(responses, generated_dir):
+    breeds = get_dog_breeds()
+    top1 = 0
+    top5 = 0
+    for response in responses:
+        # print(response)
+        if 'error' in response:
+            top1 += 1
+            top5 += 1
+            continue 
+        if response[0]['label'] in breeds:
+            top1 += 1
+        rep5 = response[:5]
+        labels = [x['label'] for x in rep5]
+        if any(label in breeds for label in labels):
+            top5 += 1
+
+    return top1/len(os.listdir(generated_dir)), top5/len(os.listdir(generated_dir))
 
 
 def top1_accuracy(generated_dir, token):
@@ -142,9 +169,11 @@ def main():
     print('KID: {}'.format(kid))
     # print(test_resnet('C:\\Users\\amart50\\Documents\\stable-i2i\\outputs\\img2img-samples\\a_realistic_photo_of_a_dog_head\\seed_24469_00077.png'))
     
-    # if opt.api_key: # This is definetly not my key ;) 
-    #     top1_accuracy(opt.generated_dir)
-    #     top5_accuracy(opt.generated_dir)
+    if opt.api_key: # This is definetly not my key ;) 
+        responses = call_api(opt.generated_dir, opt.api_key)
+        top1, top5 = call_accuracy(responses, opt.generated_dir)
+        print('top1: {}'.format(top1))
+        print('top5: {}'.format(top5))
 
 
 
