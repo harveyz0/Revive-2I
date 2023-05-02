@@ -439,7 +439,23 @@ elif opt.source_img_dir:
             n_rows = opt.n_rows if opt.n_rows > 0 else batch_size
             if not opt.from_file:
                 assert opt.prompt is not None
-                prompt = opt.prompt
+                if opt.prompt == 'class':
+                    if 'boston' in filename:
+                        prompt = 'A photo of the head of a boston terrier dog'
+                    elif 'boxer' in filename:
+                        prompt = 'A photo of the head of a boxer dog'
+                    elif 'chi' in filename: 
+                        prompt = 'A photo of the head of a chihuahua dog'
+                    elif 'dane' in filename:
+                        prompt = 'A photo of the head of a great dane dog'
+                    elif 'pek' in filename:
+                        prompt = 'A photo of the head of a pekingese dog'
+                    elif 'rot' in filename:
+                        prompt = 'A photo of the head of a rottweiler dog'
+                    else:
+                        prompt = 'A photo of the head of a dog'
+                else:
+                    prompt = opt.prompt
                 data = [batch_size * [prompt]]
 
             else:
@@ -533,11 +549,16 @@ elif opt.source_img_dir:
                                 x_samples_ddim = modelFS.decode_first_stage(samples_ddim[i].unsqueeze(0))
                                 x_sample = torch.clamp((x_samples_ddim + 1.0) / 2.0, min=0.0, max=1.0)
                                 x_sample = 255.0 * rearrange(x_sample[0].cpu().numpy(), "c h w -> h w c")
+                                # Image.fromarray(x_sample.astype(np.uint8)).save(
+                                #     os.path.join(sample_path, "seed_" + str(opt.seed) + "_" + f"{base_count:05}.{opt.format}")
+                                # )
+                                # replace .jpg with '' 
+                                new_filename = filename.replace(".jpg", "")+ '_' + str(opt.seed) + "_" + f"{base_count:05}.{opt.format}"
                                 Image.fromarray(x_sample.astype(np.uint8)).save(
-                                    os.path.join(sample_path, "seed_" + str(opt.seed) + "_" + f"{base_count:05}.{opt.format}")
+                                    os.path.join(sample_path, new_filename)
                                 )
                                 seeds += str(opt.seed) + ","
-                                opt.seed += 1
+                                # opt.seed += 1 # stopped incrememnting seed to keep the same seed for each prompt
                                 base_count += 1
 
                             if opt.device != "cpu":
