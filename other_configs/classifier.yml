@@ -1,0 +1,10 @@
+name: classifier
+channels:
+  - defaults
+dependencies:
+  - pytorch
+  - torchaudio
+  - pytorch-cuda=11.7
+  - torchvision
+  - ipykernel
+prefix: C:\Users\amart50\.conda\envs\classifier
