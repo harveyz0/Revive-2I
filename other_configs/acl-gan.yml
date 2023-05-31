@@ -1,0 +1,11 @@
+name: ldm
+channels:
+  - defaults
+dependencies:
+  - pytorch=1.11.0
+  - cudatoolkit=11.3
+  - pip=20.3
+  - torchvision=0.12.0
+  - python=3.8.5
+  - numpy=1.20.3
+prefix: C:\ProgramData\Anaconda3\envs\ldm
