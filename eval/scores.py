@@ -7,6 +7,10 @@ import os
 import numpy as np
 import requests
 import torch
+import timm
+from urllib.request import urlopen
+from PIL import Image, ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 from fid_score import calculate_fid_given_paths
 from kid_score import calculate_kid_given_paths
 
@@ -47,6 +51,10 @@ def get_dog_breeds():
         for line in f:
             dog_list.append(line.split('\t')[2].strip())
     # print(dog_list)
+    for dog in dog_list:
+        if ',' in dog:
+            new_name = dog.split(',')[0].strip()
+            dog_list[dog_list.index(dog)] = new_name
     return dog_list
 
 def call_resnet(image, token):
@@ -121,6 +129,7 @@ def top5_accuracy(generated_dir, token):
     print(top5/len(os.listdir(generated_dir)))
 
 
+
 def main():
     parser = argparse.ArgumentParser()
 
@@ -153,9 +162,16 @@ def main():
     )
 
     parser.add_argument(
+        '--class-csv',
+        type=str,
+        default=None,
+        help='path to csv file with class labels'
+    )
+
+    parser.add_argument(
         '--out-dir',
         type=str,
-        default='outputs/eval',
+        default=None,
         help='path to save the evaluation results'
     )
 
@@ -173,6 +189,66 @@ def main():
         top1, top5 = call_accuracy(responses, opt.generated_dir)
         print('top1: {}'.format(top1))
         print('top5: {}'.format(top5))
+    elif opt.class_csv:
+        #csv format: filename,label 
+        with open(opt.class_csv, 'r') as f:
+            lines = f.readlines()
+            label_gold_pairs = []
+            for line in lines:
+                label = line.split(',')[1].strip()
+                filename = line.split(',')[0].strip()
+                gold = ''
+                if 'boston' in filename:
+                    gold = 'Boston bull'
+                elif 'boxer' in filename:
+                    gold = 'boxer'
+                elif 'chi' in filename:
+                    gold = 'Chihuahua'
+                elif 'dane' in filename:
+                    gold = 'Great Dane'
+                elif 'pek' in filename:
+                    gold = 'Pekinese'
+                elif 'rot' in filename:
+                    gold = 'Rottweiler'
+                else:
+                    continue
+                pair = (label, gold)
+                label_gold_pairs.append(pair)
+        # using label_gold_pairs, calculate two top-1 scores. 
+        # First score: how many are dog labels (use dog_list), 
+        # Second score: how many are the gold label
+        dog_list = get_dog_breeds()
+        top1_dog = 0
+        top1_gold = 0
+
+        for pair in label_gold_pairs:
+            if pair[0] in dog_list:
+                top1_dog += 1
+            if pair[0] == pair[1]:
+                top1_gold += 1
+            # if not (pair[0] in dog_list or pair[0] == pair[1]):
+            #     print(pair)
+
+        top1_dog /= len(label_gold_pairs)
+        top1_gold /= len(label_gold_pairs)
+        print('top1_dog: {}'.format(top1_dog))
+        print('top1_gold: {}'.format(top1_gold))
+
+        if opt.out_dir:
+            #write FID, KID, top1_dog, top1_gold to a file
+            with open(os.path.join(opt.out_dir, 'scores.txt'), 'w') as f:
+                f.write('FID: {}\n'.format(fid))
+                f.write('KID: {}\n'.format(kid))
+                f.write('top1_dog: {}\n'.format(top1_dog))
+                f.write('top1_gold: {}\n'.format(top1_gold))
+        else:
+            print('FID: {}\n'.format(fid))
+            print('KID: {}\n'.format(kid))
+            print('top1_dog: {}\n'.format(top1_dog))
+            print('top1_gold: {}\n'.format(top1_gold))
+
+
+
 
 
 
