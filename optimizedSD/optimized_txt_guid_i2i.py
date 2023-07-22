@@ -97,6 +97,20 @@ parser.add_argument(
 )
 
 parser.add_argument(
+    "--ddim_steps",
+    type=int,
+    default=50,
+    help="number of ddim sampling steps",
+)
+
+parser.add_argument(
+    "--strength",
+    type=float,
+    default=1.0,
+    help="strength for noising/unnoising. 1.0 corresponds to full destruction of information in init image",
+)
+
+parser.add_argument(
     "--config", 
     type=str, 
     default=config, 
@@ -112,12 +126,6 @@ parser.add_argument(
     "--skip_save",
     action="store_true",
     help="do not save individual samples. For speed measurements.",
-)
-parser.add_argument(
-    "--ddim_steps",
-    type=int,
-    default=50,
-    help="number of ddim sampling steps",
 )
 
 parser.add_argument(
@@ -144,12 +152,7 @@ parser.add_argument(
     default=512,
     help="image width, in pixel space",
 )
-parser.add_argument(
-    "--strength",
-    type=float,
-    default=1.0,
-    help="strength for noising/unnoising. 1.0 corresponds to full destruction of information in init image",
-)
+
 parser.add_argument(
     "--n_samples",
     type=int,
