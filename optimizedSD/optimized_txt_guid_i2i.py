@@ -478,6 +478,22 @@ elif opt.source_img_dir:
                         prompt = 'rottweiler'
                     else:
                         prompt = 'dog'
+
+                elif opt.prompt == 'no photo':
+                    if 'boston' in filename:
+                        prompt = 'boston terrier head'
+                    elif 'boxer' in filename:
+                        prompt = 'boxer head'
+                    elif 'chi' in filename: 
+                        prompt = 'chihuahua head'
+                    elif 'dane' in filename:
+                        prompt = 'great dane head'
+                    elif 'pek' in filename:
+                        prompt = 'pekingese head'
+                    elif 'rot' in filename:
+                        prompt = 'rottweiler head'
+                    else:
+                        prompt = 'dog head'
                 
                 else:
                     prompt = opt.prompt
