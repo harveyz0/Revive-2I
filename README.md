@@ -26,16 +26,16 @@ The dataset can be downloaded from [GoogleDrive](https://drive.google.com/drive/
 All code can be run out of optimized_txt_guid_i2i.py. There are two options for running the code 
 1. Single image translation
 ```bash
-python optimized_txt_guid_i2i.py "prompt" --source-img <IMG> 
+python optimizedSD/optimized_txt_guid_i2i.py "prompt" --source-img <IMG> 
 ```
 2. Batch image translation
 ```bash
-python optimized_txt_guid_i2i.py "prompt" --source-img-dir <DIR>
+python optimizedSD/optimized_txt_guid_i2i.py "prompt" --source-img-dir <DIR>
 ```
 
 The code used to generate the results in the paper is:
 ```bash
-python optimized_txt_guid_i2i.py "class" --source-img-dir data/skull2dog/testA/ --ddim_steps 100 --strength 0.95 --seed 42
+python optimizedSD/optimized_txt_guid_i2i.py "class" --source-img-dir data/skull2dog/testA/ --ddim_steps 100 --strength 0.95 --seed 42
 ```
 
 ## Evaluation
