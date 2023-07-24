@@ -7,8 +7,8 @@ This repo is a fork of a modified version of Stable Diffuion, optimized to use l
 ## Installation
 <!--  bash -->
 ```bash
-git clone https://github.com/alexmartin1722/stable-i2i.git
-cd stable-i2i
+git clone https://github.com/alexmartin1722/Revive-2I.git
+cd Revive-2I
 conda env create -f environment.yaml
 conda activate ldm
 pip install transformers==4.19.2 diffusers invisible-watermark
@@ -36,6 +36,25 @@ python optimized_txt_guid_i2i.py "prompt" --source-img-dir <DIR>
 The code used to generate the results in the paper is:
 ```bash
 python optimized_txt_guid_i2i.py "class" --source-img-dir data/skull2dog/testA/ --ddim_steps 100 --strength 0.95 --seed 42
+```
+
+## Evaluation
+To evaluate the code, first classifier the images in the ouput folder
+
+``bash
+python classification/classifier.py --image-dir <DIR> --output <DIR>/labels.csv
+```
+
+Then run the evaluation script with the DIR
+
+```bash
+python eval/scores.py --generated-dir <DIR> --target-dir data/skull2dog/testB --class-csv <DIR>
+```
+
+You can also skip the classification step by providing your own HuggingFace API key, but if you have rate limits, use the classification script. 
+
+```bash
+python eval/scores.py --generated-dir <DIR> --target-dir data/skull2dog/testB --api-key XXX
 ```
 
 ## Citation 

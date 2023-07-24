@@ -25,25 +25,18 @@ def main():
     model = timm.create_model('resnet50.a1_in1k', pretrained=True)
     model = model.eval()
 
-    # get model specific transforms (normalization, resize)
     data_config = timm.data.resolve_model_data_config(model)
     transforms = timm.data.create_transform(**data_config, is_training=False)
 
-    # output = model(transforms(img).unsqueeze(0))  # unsqueeze single image into batch of 1
-
-    # top5_probabilities, top5_class_indices = torch.topk(output.softmax(dim=1) * 100, k=5)
-
-    # print(top5_class_indices, top5_probabilities)
-    # path = 'C:\\Users\\amart50\\Desktop\\AFHQ\\test\\dog\\'
     labeled_images = [] # filename, top1_index
     for filename in os.listdir(args.image_dir):
         if '.png' in filename:
             img = Image.open(args.image_dir+filename)
-            output = model(transforms(img).unsqueeze(0))  # unsqueeze single image into batch of 1
+            output = model(transforms(img).unsqueeze(0))  
             top1_probability, top1_index = torch.topk(output.softmax(dim=1) * 100, k=1)
             labeled_images.append((filename, top1_index[0][0].item()))
             print(filename, top1_index[0][0].item(), top1_probability[0][0].item(), classes[top1_index[0][0].item()])
-    #write labels to csv 
+
     with open(args.output, 'w') as f:
         f.write('filename,label\n')
         for filename, label in labeled_images:

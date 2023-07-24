@@ -17,7 +17,6 @@ from kid_score import calculate_kid_given_paths
 import argparse
 
 
-# def calculate_fid_given_paths(paths, batch_size, cuda, dims, bootstrap=True, n_bootstraps=10, model_type='inception'):
 def calculate_fid(generated, real, cuda=True, batch_size=25, dims=2048):
     count = len(os.listdir(real))
     incrementer = 1
@@ -30,7 +29,6 @@ def calculate_fid(generated, real, cuda=True, batch_size=25, dims=2048):
     fid = calculate_fid_given_paths([generated, real], batch_size, cuda, dims)
     return fid
 
-# calculate_kid_given_paths(paths, batch_size, cuda, dims, model_type='inception'):
 def calculate_kid(generated, real, cuda=True, batch_size=50, dims=2048):
     count = len(os.listdir(real))
     incrementer = 1
@@ -50,7 +48,7 @@ def get_dog_breeds():
     with open('dog_list.txt', 'r') as f:
         for line in f:
             dog_list.append(line.split('\t')[2].strip())
-    # print(dog_list)
+
     for dog in dog_list:
         if ',' in dog:
             new_name = dog.split(',')[0].strip()
@@ -66,14 +64,13 @@ def call_resnet(image, token):
         data = f.read()
     response = requests.post(API_URL, headers=headers, data=data)
     response = response.json()
-    # get top 1 label from response and return it 
+
     return response
 
 def call_api(generated_dir, token):
     responses = []
     for filename in os.listdir(generated_dir):
         if filename.endswith(".png"):
-            # responses.append(call_resnet(os.path.join(generated_dir, filename), token))
             responses.append(call_resnet(os.path.join(generated_dir, filename), token))
     return responses
 
@@ -83,7 +80,6 @@ def call_accuracy(responses, generated_dir):
     top1 = 0
     top5 = 0
     for response in responses:
-        # print(response)
         if 'error' in response:
             top1 += 1
             top5 += 1
@@ -117,9 +113,6 @@ def top5_accuracy(generated_dir, token):
     for filename in os.listdir(generated_dir):
         if filename.endswith(".png"):
             response = call_resnet(os.path.join(generated_dir, filename))
-            # print(response)
-            # response = response[:5]
-            # print(response)
             labels = [x['label'] for x in response]
             if any(label in breeds for label in labels):
                 top5 += 1
@@ -214,20 +207,16 @@ def main():
                     continue
                 pair = (label, gold)
                 label_gold_pairs.append(pair)
-        # using label_gold_pairs, calculate two top-1 scores. 
-        # First score: how many are dog labels (use dog_list), 
-        # Second score: how many are the gold label
+    
         dog_list = get_dog_breeds()
-        top1_dog = 0
-        top1_gold = 0
+        top1_dog = 0 # First score: how many are dog labels (use dog_list)
+        top1_gold = 0 # Second score: how many are the gold label
 
         for pair in label_gold_pairs:
             if pair[0] in dog_list:
                 top1_dog += 1
             if pair[0] == pair[1]:
                 top1_gold += 1
-            # if not (pair[0] in dog_list or pair[0] == pair[1]):
-            #     print(pair)
 
         top1_dog /= len(label_gold_pairs)
         top1_gold /= len(label_gold_pairs)
@@ -235,7 +224,6 @@ def main():
         print('top1_gold: {}'.format(top1_gold))
 
         if opt.out_dir:
-            #write FID, KID, top1_dog, top1_gold to a file
             with open(os.path.join(opt.out_dir, 'scores.txt'), 'w') as f:
                 f.write('FID: {}\n'.format(fid))
                 f.write('KID: {}\n'.format(kid))
