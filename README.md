@@ -39,6 +39,10 @@ The code used to generate the results in the paper is:
 python optimizedSD/optimized_txt_guid_i2i.py "class" --source-img-dir data/skull2dog/testA/ --ddim_steps 100 --strength 0.95 --seed 42
 ```
 
+Other built in prompting options are 
+1. "short class" for just the ImageNet class name
+2. 
+
 ## Evaluation
 To evaluate the code, first classifier the images in the ouput folder
 
