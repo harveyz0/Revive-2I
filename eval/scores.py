@@ -44,8 +44,9 @@ def calculate_kid(generated, real, cuda=True, batch_size=50, dims=2048):
 def get_dog_breeds():
     # from dog_list.txt, get all the dog breed labels. they are listed as
     # 0	151	Chihuahua
+    # Revive-2I\eval\dog_list.txt
     dog_list = []
-    with open('dog_list.txt', 'r') as f:
+    with open('eval/dog_list.txt', 'r') as f:
         for line in f:
             dog_list.append(line.split('\t')[2].strip())
 
@@ -234,13 +235,6 @@ def main():
             print('KID: {}\n'.format(kid))
             print('top1_dog: {}\n'.format(top1_dog))
             print('top1_gold: {}\n'.format(top1_gold))
-
-
-
-
-
-
-
 
 if __name__ == '__main__':
     main()

@@ -12,6 +12,7 @@ cd Revive-2I
 conda env create -f environment.yaml
 conda activate ldm
 pip install transformers==4.19.2 diffusers invisible-watermark
+pip install timm scikit-learn 
 ```
 
 ## Weights
