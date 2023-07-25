@@ -462,6 +462,39 @@ elif opt.source_img_dir:
                         prompt = 'A photo of the head of a rottweiler dog'
                     else:
                         prompt = 'A photo of the head of a dog'
+                
+                elif opt.prompt == 'short class':
+                    if 'boston' in filename:
+                        prompt = 'boston terrier'
+                    elif 'boxer' in filename:
+                        prompt = 'boxer'
+                    elif 'chi' in filename: 
+                        prompt = 'chihuahua'
+                    elif 'dane' in filename:
+                        prompt = 'great dane'
+                    elif 'pek' in filename:
+                        prompt = 'pekingese'
+                    elif 'rot' in filename:
+                        prompt = 'rottweiler'
+                    else:
+                        prompt = 'dog'
+
+                elif opt.prompt == 'no photo':
+                    if 'boston' in filename:
+                        prompt = 'boston terrier head'
+                    elif 'boxer' in filename:
+                        prompt = 'boxer head'
+                    elif 'chi' in filename: 
+                        prompt = 'chihuahua head'
+                    elif 'dane' in filename:
+                        prompt = 'great dane head'
+                    elif 'pek' in filename:
+                        prompt = 'pekingese head'
+                    elif 'rot' in filename:
+                        prompt = 'rottweiler head'
+                    else:
+                        prompt = 'dog head'
+                
                 else:
                     prompt = opt.prompt
                 data = [batch_size * [prompt]]
