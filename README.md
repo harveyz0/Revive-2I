@@ -1,5 +1,5 @@
 # Jurassic World Remake: Bringing Ancient Fossils Back to Life via Zero-Shot Long Image-to-Image Translation </h1>
-[Project Page](https://tinyurl.com/skull2animal) | [ACM MM]() | [arxiv]() | [Dataset](https://drive.google.com/drive/folders/1feHrsMNokvXYao_8UkjuJRfaAgmj_FhQ?usp=sharing)
+[Project Page](https://tinyurl.com/skull2animal) | [ACM MM]() | [arxiv]() | [Dataset](https://forms.gle/7fcQHBAtZa3toMPn8)
 
 This repo is a fork of a modified version of Stable Diffuion, optimized to use less VRAM than the original. The original repo can be found [here](https://github.com/basujindal/stable-diffusion). 
 
