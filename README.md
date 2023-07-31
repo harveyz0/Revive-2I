@@ -21,7 +21,7 @@ The weights used in this paper are the `stable-diffusion-v1-4` downloadable from
 Once the weights are downloaded they can be placed in `models/ldm/stable-diffusion-v1/model.ckpt` or you can specify the path to the weights using the `--ckpt` argument.
 
 ## Dataset
-The dataset can be downloaded from [GoogleDrive](https://drive.google.com/drive/folders/1feHrsMNokvXYao_8UkjuJRfaAgmj_FhQ?usp=sharing). When downloaded, place inside this directory in `data/`. For example the dog dataset would be in `data/skull2dog`. 
+Once access to the dataset is granted. The dataset can be downloaded from [GoogleDrive](https://drive.google.com/drive/folders/1feHrsMNokvXYao_8UkjuJRfaAgmj_FhQ?usp=sharing). When downloaded, place inside this directory in `data/`. For example the dog dataset would be in `data/skull2dog`. 
 
 ## Usage
 All code can be run out of optimized_txt_guid_i2i.py. There are two options for running the code 
