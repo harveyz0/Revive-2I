@@ -41,12 +41,12 @@ python optimizedSD/optimized_txt_guid_i2i.py "class" --source-img-dir data/skull
 
 Other built in prompting options are 
 1. "short class" for just the ImageNet class name
-2. 
+2. "no photo" for the prompt "class name head"
 
 ## Evaluation
 To evaluate the code, first classifier the images in the ouput folder
 
-``bash
+```bash
 python classification/classifier.py --image-dir <DIR> --output <DIR>/labels.csv
 ```
 
