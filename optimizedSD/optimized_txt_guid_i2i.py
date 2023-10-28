@@ -55,29 +55,30 @@ def load_img(path, h0, w0):
 
 config = "optimizedSD/v1-inference.yaml"
 ckpt = "models/ldm/stable-diffusion-v1/model.ckpt"
+data_directory = "data/skull2dog/testA"
 
 parser = argparse.ArgumentParser()
 
 parser.add_argument(
-    "prompt", 
-    type=str, 
-    nargs="?", 
-    default="A realistic photo of a dog", 
+    "prompt",
+    type=str,
+    nargs="?",
+    default="A realistic photo of a dog",
     help="the prompt to render"
 )
 
 parser.add_argument(
-    "--outdir", 
-    type=str, 
-    nargs="?", 
-    help="dir to write results to", 
+    "--outdir",
+    type=str,
+    nargs="?",
+    help="dir to write results to",
     default="outputs/txt-guid-i2i-samples"
 )
 
 parser.add_argument(
-    "--source-img", 
-    type=str, 
-    nargs="?", 
+    "--source-img",
+    type=str,
+    nargs="?",
     help="path to the input image"
 )
 
@@ -86,34 +87,34 @@ parser.add_argument(
     type=str,
     nargs="?",
     help="path to the input image directory (if source-img is not specified)",
-    default="inputs/dog2skull"
+    default=data_directory
 )
 
 parser.add_argument(
-    "--ckpt", 
-    type=str, 
-    default=ckpt, 
+    "--ckpt",
+    type=str,
+    default=ckpt,
     help="path to the model checkpoint to use"
 )
 
 parser.add_argument(
     "--ddim_steps",
     type=int,
-    default=50,
+    default=100,
     help="number of ddim sampling steps",
 )
 
 parser.add_argument(
     "--strength",
     type=float,
-    default=1.0,
+    default=0.95,
     help="strength for noising/unnoising. 1.0 corresponds to full destruction of information in init image",
 )
 
 parser.add_argument(
-    "--config", 
-    type=str, 
-    default=config, 
+    "--config",
+    type=str,
+    default=config,
     help="path to the config file to use"
 )
 
@@ -179,7 +180,7 @@ parser.add_argument(
 parser.add_argument(
     "--seed",
     type=int,
-    default=None,
+    default=42,
     help="the seed (for reproducible sampling)",
 )
 parser.add_argument(
@@ -452,7 +453,7 @@ elif opt.source_img_dir:
                         prompt = 'A photo of the head of a boston terrier dog'
                     elif 'boxer' in filename:
                         prompt = 'A photo of the head of a boxer dog'
-                    elif 'chi' in filename: 
+                    elif 'chi' in filename:
                         prompt = 'A photo of the head of a chihuahua dog'
                     elif 'dane' in filename:
                         prompt = 'A photo of the head of a great dane dog'
@@ -462,13 +463,13 @@ elif opt.source_img_dir:
                         prompt = 'A photo of the head of a rottweiler dog'
                     else:
                         prompt = 'A photo of the head of a dog'
-                
+
                 elif opt.prompt == 'short class':
                     if 'boston' in filename:
                         prompt = 'boston terrier'
                     elif 'boxer' in filename:
                         prompt = 'boxer'
-                    elif 'chi' in filename: 
+                    elif 'chi' in filename:
                         prompt = 'chihuahua'
                     elif 'dane' in filename:
                         prompt = 'great dane'
@@ -484,7 +485,7 @@ elif opt.source_img_dir:
                         prompt = 'boston terrier head'
                     elif 'boxer' in filename:
                         prompt = 'boxer head'
-                    elif 'chi' in filename: 
+                    elif 'chi' in filename:
                         prompt = 'chihuahua head'
                     elif 'dane' in filename:
                         prompt = 'great dane head'
@@ -494,7 +495,7 @@ elif opt.source_img_dir:
                         prompt = 'rottweiler head'
                     else:
                         prompt = 'dog head'
-                
+
                 else:
                     prompt = opt.prompt
                 data = [batch_size * [prompt]]
@@ -593,7 +594,7 @@ elif opt.source_img_dir:
                                 # Image.fromarray(x_sample.astype(np.uint8)).save(
                                 #     os.path.join(sample_path, "seed_" + str(opt.seed) + "_" + f"{base_count:05}.{opt.format}")
                                 # )
-                                # replace .jpg with '' 
+                                # replace .jpg with ''
                                 new_filename = filename.replace(".jpg", "")+ '_' + str(opt.seed) + "_" + f"{base_count:05}.{opt.format}"
                                 Image.fromarray(x_sample.astype(np.uint8)).save(
                                     os.path.join(sample_path, new_filename)
