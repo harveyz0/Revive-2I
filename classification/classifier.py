@@ -4,6 +4,7 @@ import os
 import argparse
 from urllib.request import urlopen
 from PIL import Image, ImageFile
+
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
@@ -32,14 +33,18 @@ def classify(image_dir, output_csv):
     data_config = timm.data.resolve_model_data_config(model)
     transforms = timm.data.create_transform(**data_config, is_training=False)
 
-    labeled_images = [] # filename, top1_index
+    labeled_images = []  # filename, top1_index
     for filename in os.listdir(image_dir):
         if '.png' in filename:
-            img = Image.open(image_dir+os.sep+filename)
-            output = model(transforms(img).unsqueeze(0))  
-            top1_probability, top1_index = torch.topk(output.softmax(dim=1) * 100, k=1)
+            img = Image.open(image_dir + os.sep + filename)
+            output = model(transforms(img).unsqueeze(0))
+            top1_probability, top1_index = torch.topk(output.softmax(dim=1) *
+                                                      100,
+                                                      k=1)
             labeled_images.append((filename, top1_index[0][0].item()))
-            print(filename, top1_index[0][0].item(), top1_probability[0][0].item(), classes[top1_index[0][0].item()])
+            print(filename, top1_index[0][0].item(),
+                  top1_probability[0][0].item(),
+                  classes[top1_index[0][0].item()])
 
     with open(output_csv, 'w') as f:
         f.write('filename,label\n')
