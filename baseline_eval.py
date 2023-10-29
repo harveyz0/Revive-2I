@@ -47,5 +47,5 @@ def get_scores():
     main(join(output_directory, "all_dogs"), 'data/skull2dog/testB')
 
 
+run_classifier()
 get_scores()
-#run_classifier()

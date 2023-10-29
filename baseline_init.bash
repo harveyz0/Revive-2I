@@ -92,7 +92,7 @@ tree_setup() {
 
 	return $error_code
 }
-#tree_setup
+tree_setup
 err=$?
 
 if [ $err -eq 0 ]
