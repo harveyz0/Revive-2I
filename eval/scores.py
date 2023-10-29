@@ -11,13 +11,14 @@ import timm
 from urllib.request import urlopen
 from PIL import Image, ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
-from fid_score import calculate_fid_given_paths
-from kid_score import calculate_kid_given_paths
+from .fid_score import calculate_fid_given_paths
+from .kid_score import calculate_kid_given_paths
 
 import argparse
 
 
 def calculate_fid(generated, real, cuda=True, batch_size=25, dims=2048):
+    print("REEEELLLL", generated, real)
     count = len(os.listdir(real))
     incrementer = 1
     while count > incrementer:
@@ -60,7 +61,7 @@ def call_resnet(image, token):
     API_URL = "https://api-inference.huggingface.co/models/microsoft/resnet-50"
     bearer = "Bearer " + token
     headers = {"Authorization": bearer}
-    
+
     with open(image, "rb") as f:
         data = f.read()
     response = requests.post(API_URL, headers=headers, data=data)
@@ -84,7 +85,7 @@ def call_accuracy(responses, generated_dir):
         if 'error' in response:
             top1 += 1
             top5 += 1
-            continue 
+            continue
         if response[0]['label'] in breeds:
             top1 += 1
         rep5 = response[:5]
@@ -123,20 +124,19 @@ def top5_accuracy(generated_dir, token):
     print(top5/len(os.listdir(generated_dir)))
 
 
-
-def main():
+def get_args():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        '--generated-dir', 
-        type=str, 
+        '--generated-dir',
+        type=str,
         default='outputs/img2img-samples/prompt',
         help='path to the generated images'
     )
 
     parser.add_argument(
-        '--target-dir', 
-        type=str, 
+        '--target-dir',
+        type=str,
         default='datasets/skull2animal/testB',
         help='path to the target images'
     )
@@ -169,73 +169,74 @@ def main():
         help='path to save the evaluation results'
     )
 
-    opt = parser.parse_args()
+    return parser.parse_args()
 
-    device = torch.device('cuda:{}'.format(opt.gpu_ids[0])) if opt.gpu_ids[0] != '-1' else torch.device('cpu')
 
-    fid = calculate_fid(opt.generated_dir, opt.target_dir, cuda=(opt.gpu_ids[0] != '-1'))
+def main(generated_dir, target_dir, gpu_ids='0', class_csv='outputs/allthem.csv', out_dir='outputs'):
+    #opt = get_args()
+    cuda = gpu_ids != '-1'
+    if cuda:
+        torch.device('cuda:{}'.format(gpu_ids[0]))
+    else:
+        torch.device('cpu')
+
+    fid = calculate_fid(generated_dir, target_dir, cuda=cuda)
     print('FID: {}'.format(fid))
-    kid = calculate_kid(opt.generated_dir, opt.target_dir, cuda=(opt.gpu_ids[0] != '-1'))
+    kid = calculate_kid(generated_dir, target_dir, cuda=cuda)
     print('KID: {}'.format(kid))
-    
-    if opt.api_key:
-        responses = call_api(opt.generated_dir, opt.api_key)
-        top1, top5 = call_accuracy(responses, opt.generated_dir)
-        print('top1: {}'.format(top1))
-        print('top5: {}'.format(top5))
-    elif opt.class_csv:
-        #csv format: filename,label 
-        with open(opt.class_csv, 'r') as f:
-            lines = f.readlines()
-            label_gold_pairs = []
-            for line in lines:
-                label = line.split(',')[1].strip()
-                filename = line.split(',')[0].strip()
-                gold = ''
-                if 'boston' in filename:
-                    gold = 'Boston bull'
-                elif 'boxer' in filename:
-                    gold = 'boxer'
-                elif 'chi' in filename:
-                    gold = 'Chihuahua'
-                elif 'dane' in filename:
-                    gold = 'Great Dane'
-                elif 'pek' in filename:
-                    gold = 'Pekinese'
-                elif 'rot' in filename:
-                    gold = 'Rottweiler'
-                else:
-                    continue
-                pair = (label, gold)
-                label_gold_pairs.append(pair)
-    
-        dog_list = get_dog_breeds()
-        top1_dog = 0 # First score: how many are dog labels (use dog_list)
-        top1_gold = 0 # Second score: how many are the gold label
 
-        for pair in label_gold_pairs:
-            if pair[0] in dog_list:
-                top1_dog += 1
-            if pair[0] == pair[1]:
-                top1_gold += 1
-
-        top1_dog /= len(label_gold_pairs)
-        top1_gold /= len(label_gold_pairs)
-        print('top1_dog: {}'.format(top1_dog))
-        print('top1_gold: {}'.format(top1_gold))
-
-        if opt.out_dir:
-            with open(os.path.join(opt.out_dir, 'scores.txt'), 'w') as f:
-                f.write('FID: {}\n'.format(fid))
-                f.write('KID: {}\n'.format(kid))
-                f.write('top1_dog: {}\n'.format(top1_dog))
-                f.write('top1_gold: {}\n'.format(top1_gold))
+        #csv format: filename,label
+    lines = []
+    with open(class_csv, 'r') as f:
+        lines = f.readlines()
+    label_gold_pairs = []
+    for line in lines:
+        label = line.split(',')[1].strip()
+        filename = line.split(',')[0].strip()
+        gold = ''
+        if 'boston' in filename:
+            gold = 'Boston bull'
+        elif 'boxer' in filename:
+            gold = 'boxer'
+        elif 'chi' in filename:
+            gold = 'Chihuahua'
+        elif 'dane' in filename:
+            gold = 'Great Dane'
+        elif 'pek' in filename:
+            gold = 'Pekinese'
+        elif 'rot' in filename:
+            gold = 'Rottweiler'
         else:
-            print('FID: {}\n'.format(fid))
-            print('KID: {}\n'.format(kid))
-            print('top1_dog: {}\n'.format(top1_dog))
-            print('top1_gold: {}\n'.format(top1_gold))
+            continue
+        pair = (label, gold)
+        label_gold_pairs.append(pair)
+
+    dog_list = get_dog_breeds()
+    top1_dog = 0 # First score: how many are dog labels (use dog_list)
+    top1_gold = 0 # Second score: how many are the gold label
+
+    for pair in label_gold_pairs:
+        if pair[0] in dog_list:
+            top1_dog += 1
+        if pair[0] == pair[1]:
+            top1_gold += 1
+
+    top1_dog /= len(label_gold_pairs)
+    top1_gold /= len(label_gold_pairs)
+    print('top1_dog: {}'.format(top1_dog))
+    print('top1_gold: {}'.format(top1_gold))
+
+    if out_dir:
+        with open(os.path.join(out_dir, 'scores.txt'), 'w') as f:
+            f.write('FID: {}\n'.format(fid))
+            f.write('KID: {}\n'.format(kid))
+            f.write('top1_dog: {}\n'.format(top1_dog))
+            f.write('top1_gold: {}\n'.format(top1_gold))
+    else:
+        print('FID: {}\n'.format(fid))
+        print('KID: {}\n'.format(kid))
+        print('top1_dog: {}\n'.format(top1_dog))
+        print('top1_gold: {}\n'.format(top1_gold))
 
 if __name__ == '__main__':
     main()
-

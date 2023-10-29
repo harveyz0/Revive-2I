@@ -19,8 +19,8 @@ except ImportError:
     # If not tqdm is not available, provide a mock version of it
     def tqdm(x): return x
 
-from models.inception import InceptionV3
-from models.lenet import LeNet5
+from .models.inception import InceptionV3
+from .models.lenet import LeNet5
 
 def get_activations(files, model, batch_size=50, dims=2048,
                     cuda=False, verbose=False):

@@ -43,8 +43,9 @@ def classify(image_dir, output_csv, classes_file):
                                                       100,
                                                       k=1)
             outputs.append({
-                "filename": os.path.join(image_dir, filename),
-                "label": top1_index[0][0].item()
+                "filename": filename,
+                "label":
+                top1_index[0][0].item()
             })
             print(filename, top1_index[0][0].item(),
                   top1_probability[0][0].item(),
