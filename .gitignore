@@ -8,3 +8,11 @@ input/
 Pipfile.lock
 *.pdf
 *.tex
+*.bbl
+*.ckpt
+src/
+optimizedSD/.ipynb_checkpoints/
+outputs/
+latent_diffusion.egg-info/
+data/skull2dog/
+logs/
