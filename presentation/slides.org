@@ -1,0 +1,69 @@
+#+TITLE:     Skulls to living animals
+#+AUTHOR:    Zachary Harvey
+#+EMAIL:     harveyz1@sunypoly.edu
+#+DATE:      10-29-2023
+#+DESCRIPTION: Assignment 2 for CS548-12
+#+KEYWORDS: 
+#+LANGUAGE:  en
+#+OPTIONS:   H:1 num:nil toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t tex:imagemagick
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+HTML_LINK_UP:
+#+HTML_LINK_HOME:
+#+BEAMER_THEME: Dresden [height=14pt]
+
+#+startup: beamer
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+LATEX_HEADER: \usepackage{biblatex}
+#+LATEX_HEADER: \addbibresource{References.bib}
+
+* Data Setup
+- Dataset is available through request through a Google Drive link.
+  https://drive.google.com/drive/folders/1feHrsMNokvXYao_8UkjuJRfaAgmj_FhQ?usp=sharing
+- You also need the checkpoint for stable diffusion of stable-diffusion-v1-4 from Huggingface.
+  https://huggingface.co/CompVis
+
+* Data Setup con't
+- Once you have the data from Google Drive you must unzip all of them into data/skull2dog
+- The stable diffusion should be placed into the file models/ldm/stable-diffusion-v1/model.ckpt
+
+* Approach
+** 
+:PROPERTIES:
+:BEAMER_COL: 1.0
+:BEAMER_ENV: block
+:END:
+[[./method_web.png]] \cite{JurassicFossilsI2I}
+
+* Approach con't
+- Frechet Inception Distance to measure how far the generated images are from real images.
+- Kernel Inception Distance with Inception V3 to measure the distance between features.
+
+* Current Results
+** 
+:PROPERTIES:
+:BEAMER_COL: 0.5
+:BEAMER_ENV: block
+:END:
+[[../outputs/txt-guid-i2i-samples/A_photo_of_the_head_of_a_boxer_dog/boxer_0300_42_00007.png]] \cite{JurassicFossilsI2I}
+** 
+:PROPERTIES:
+:BEAMER_COL: 0.5
+:BEAMER_ENV: block
+:END:
+[[../data/skull2dog/trainA/boxer_0301.jpg]] \cite{anonymous2023jurassic}
+
+* Current Results con't
+- FID Mean: ~152.097
+- FID Standard Deviation: ~6.855
+- KID Mean: ~0.038
+- KID Standard Deviation: ~0.001
+
+* References
+Revive-2I by alexmartin1722
+https://github.com/alexmartin1722/Revive-2I
+
+* References 
+\printbibliography
