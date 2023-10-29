@@ -2,19 +2,19 @@ import torch
 import timm
 import os
 import argparse
-from urllib.request import urlopen
 from PIL import Image, ImageFile
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
-def load_classes():
-    # load imagenet1k class index
-    url = 'https://raw.githubusercontent.com/pytorch/hub/master/imagenet_classes.txt'
-    with urlopen(url) as f:
-        classes = [line.strip() for line in f.readlines()]
-    classes = [c.decode('utf-8') for c in classes]
-    return classes
+def load_classes(class_path=os.path.join(os.path.dirname("__file__"), "..",
+                                         "data", "imagenet_classes.txt")):
+    if not os.path.exists(class_path):
+        raise FileNotFoundError(f"Missing image net classes file {class_path}")
+    all_classes = []
+    with open(class_path) as classes:
+        all_classes = classes.read().splitlines()
+    return all_classes
 
 
 def get_args(image_dir='', output_csv='labels.csv'):
@@ -24,8 +24,10 @@ def get_args(image_dir='', output_csv='labels.csv'):
     return parser.parse_args()
 
 
-def classify(image_dir, output_csv):
-    classes = load_classes()
+def classify(image_dir, output_csv, classes_file):
+    classes = load_classes(classes_file)
+
+    outputs = []
 
     model = timm.create_model('resnet50.a1_in1k', pretrained=True)
     model = model.eval()
@@ -33,7 +35,6 @@ def classify(image_dir, output_csv):
     data_config = timm.data.resolve_model_data_config(model)
     transforms = timm.data.create_transform(**data_config, is_training=False)
 
-    labeled_images = []  # filename, top1_index
     for filename in os.listdir(image_dir):
         if '.png' in filename:
             img = Image.open(image_dir + os.sep + filename)
@@ -41,15 +42,15 @@ def classify(image_dir, output_csv):
             top1_probability, top1_index = torch.topk(output.softmax(dim=1) *
                                                       100,
                                                       k=1)
-            labeled_images.append((filename, top1_index[0][0].item()))
+            outputs.append({
+                "filename": os.path.join(image_dir, filename),
+                "label": top1_index[0][0].item()
+            })
             print(filename, top1_index[0][0].item(),
                   top1_probability[0][0].item(),
                   classes[top1_index[0][0].item()])
 
-    with open(output_csv, 'w') as f:
-        f.write('filename,label\n')
-        for filename, label in labeled_images:
-            f.write(f'{filename},{classes[label]}\n')
+    return outputs
 
 
 def main():

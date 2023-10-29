@@ -1,4 +1,6 @@
-import argparse, os, re
+import argparse
+import os
+import re
 import torch
 import numpy as np
 from random import randint
